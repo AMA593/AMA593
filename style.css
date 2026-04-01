@@ -1,0 +1,977 @@
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* Variabel Palet Warna */
+
+/* Variabel Warna Default (Dark Mode) */
+:root {
+    /* Mode Gelap (Default) */
+    --bg-utama: #222831;
+    --bg-kartu: #393E46;
+    --warna-teks: #DFD0B8;
+    --aksen: #948979;
+}
+
+[data-theme="light"] {
+    /* Mode Terang (Akan aktif saat tombol diklik) */
+    --bg-utama: #F5F5F5;
+    --bg-kartu: #E0E0E0;
+    --warna-teks: #222831;
+    --aksen: #948979;
+}
+
+/* Ganti semua warna manual di CSS Anda dengan variabel ini */
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.4s ease, color 0.4s ease; /* Animasi transisi smooth */
+}
+
+/* --- Styling Tombol Switch --- */
+.theme-switch-wrapper {
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+}
+
+.theme-switch {
+    display: inline-block;
+    height: 30px;
+    position: relative;
+    width: 60px;
+}
+
+.theme-switch input { display: none; }
+
+.slider {
+    background-color: var(--card-bg);
+    bottom: 0;
+    cursor: pointer;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: .4s;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 5px;
+    border: 1px solid var(--accent);
+}
+
+.slider i { font-size: 12px; color: var(--accent); }
+
+.slider:before {
+    background-color: var(--accent);
+    bottom: 4px;
+    content: "";
+    height: 20px;
+    left: 4px;
+    position: absolute;
+    transition: .4s;
+    width: 22px;
+    z-index: 2;
+}
+
+.slider.round { border-radius: 34px; }
+.slider.round:before { border-radius: 50%; }
+
+input:checked + .slider:before {
+    transform: translateX(28px);
+}
+
+/* Menghapus warna biru dan garis bawah pada semua link */
+a {
+    text-decoration: none; /* Menghapus garis bawah */
+    color: inherit;        /* Memaksa link mengikuti warna teks induknya */
+    display: inline-block; /* Agar transformasi seperti scale/hover berjalan lancar */
+}
+
+/* Opsional: Memberi warna saat link disentuh kursor */
+a:hover {
+    color: var(--accent); /* Berubah menjadi warna #948979 saat hover */
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    scroll-behavior: smooth;
+}
+
+body {
+    overflow-x: hidden; /* Mencegah scroll horizontal saat animasi AOS */
+    background-color: var(--bg-utama);
+    color: var(--warna-teks);
+    transition: 0.3s;
+}
+
+/* --- Typography --- */
+h1, h2 { color: var(--light); }
+p { color: var(--warna-teks); line-height: 1.6; }
+.highlight { color: var(--accent); }
+.section-title { text-align: center; margin-bottom: 3rem; }
+.section-title h2 { font-size: 2rem; text-transform: uppercase; letter-spacing: 2px; }
+.line { width: 60px; height: 3px; background: var(--accent); margin: 10px auto; border-radius: 5px; }
+
+/* REVISI: Styling Kursor untuk Animasi Ketik */
+.typing-text::after {
+    content: '|';
+    animation: blink 0.7s infinite;
+    margin-left: 2px;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* --- Preloader Logo Bulat (Fix Version) --- */
+
+.logo-wrapper {
+    width: 100px;           /* Ukuran kotak luar */
+    height: 100px;          /* Harus sama dengan width */
+    margin: 0 auto 30px;
+    position: relative;
+    
+    /* INI KUNCINYA */
+    border-radius: 50% !important; 
+    border: 3px solid var(--accent);
+    overflow: hidden !important; /* Memotong gambar agar jadi bulat */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--bg-kartu); /* Warna latar belakang bulatannya */
+    
+    /* Animasi pulse */
+    animation: pulseLogo 2s infinite ease-in-out;
+    box-shadow: 0 0 20px rgba(148, 137, 121, 0.3);
+}
+
+.logo-wrapper img {
+    width: 100%;            /* Gambar memenuhi kotak */
+    height: 100%;           /* Gambar memenuhi kotak */
+    object-fit: cover;      /* ATAU pakai 'contain' jika logo tidak ingin terpotong */
+    display: block;
+}
+
+/* Pastikan animasi tetap ada */
+@keyframes pulseLogo {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+}/* Container Utama Preloader */
+#preloader {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: var(--bg-utama);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 10000; /* Angka sangat tinggi agar di depan */
+    transition: opacity 0.6s ease;
+}
+
+/* Kotak Logo */
+.logo-wrapper {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 20px;
+    
+    /* TEKNIK CLIP-PATH: Memaksa bentuk bulat secara matematis */
+    clip-path: circle(50% at 50% 50%);
+    -webkit-clip-path: circle(50% at 50% 50%);
+    
+    background-color: var(--bg-kartu);
+    border: 3px solid var(--accent); /* Garis tepi */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ganti ke 'contain' jika logo Anda tidak ingin terpotong */
+    display: block;
+}
+
+/* Animasi Progress Bar */
+.loader-bar {
+    width: 150px;
+    height: 3px;
+    background: rgba(148, 137, 121, 0.1);
+    margin: 15px auto;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress {
+    width: 40%;
+    height: 100%;
+    background: var(--accent);
+    animation: loadingMove 1.5s infinite ease-in-out;
+}
+
+@keyframes loadingMove {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(250%); }
+}
+
+/* Class untuk menghilangkan */
+.preloader-hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+/* --- Navbar --- */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 5%;
+    backdrop-filter: blur(10px);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    transition: 0.3s ease;
+    background-color: var(--bg-utama);
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--light);
+}
+.nav-brand img { border-radius: 50%; object-fit: cover; width: 40px; height: 40px;}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+.nav-menu a {
+    text-decoration: none;
+    color: var(--light);
+    font-weight: 500;
+    transition: 0.3s ease;
+    position: relative;
+}
+/* Efek garis bawah saat hover */
+.nav-menu a::after {
+    content: '';
+    position: absolute;
+    width: 0; height: 2px;
+    background: var(--aksen);
+    bottom: -5px; left: 0;
+    transition: 0.3s;
+}
+.nav-menu a:hover { color: var(--aksen); }
+.nav-menu a:hover::after { width: 100%; }
+
+.menu-toggle { display: none; font-size: 1.5rem; cursor: pointer; color: var(--light); }
+
+/* --- Home Section --- */
+.home-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10%;
+    margin-top: 60px;
+}
+.home-content { flex: 1; padding-right: 50px; }
+.home-content h1 { font-size: 3rem; margin-bottom: 20px; min-height: 80px; } /* min-height agar layout tidak lompat saat mengetik */
+.home-socials { margin-top: 30px; display: flex; gap: 15px; }
+.home-socials a {
+    color: var(--light);
+    background: var(--gray);
+    width: 45px; height: 45px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    text-decoration: none;
+    transition: 0.3s;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+    font-size: 1.2rem;
+}
+.home-socials a:hover { background: var(--accent); color: var(--dark); transform: translateY(-5px) rotate(360deg); }
+
+.home-image { flex: 1; display: flex; justify-content: flex-end; }
+.image-wrapper img {
+    width: 250px; 
+    border-radius: 20px;
+    box-shadow: -10px 10px 0 var(--gray), -20px 20px 0 rgba(0,0,0,0.2);
+    transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.image-wrapper img:hover { 
+    transform: scale(1.05) translateY(-10px); 
+    box-shadow: -15px 15px 0 var(--accent), -30px 30px 0 rgba(0,0,0,0.3); 
+}
+
+/* --- STYLE BARU FOTO PROFIL PROFESIONAL & ANIMASI --- */
+
+.home-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1000px; /* Penting untuk efek miring 3D saat hover */
+}
+
+.profile-card-container {
+    position: relative;
+    width: 320px;
+    height: 420px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: floatingPro 6s ease-in-out infinite;
+    
+    /* PENTING BUG FIX: Jangan pakai overflow: hidden di sini */
+    /* Agar lingkaran dekoratif di belakangnya bisa terlihat meluap keluar */
+    transform-style: preserve-3d;
+}
+
+/* Wrapper Foto Utama */
+.image-wrapper-pro {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 30px; /* Sudut melengkung kartu */
+    
+    /* PENTING BUG FIX: Overflow hidden WAJIB di sini */
+    overflow: hidden; /* Memotong foto agar ikut melengkung */
+    
+    background: var(--bg-kartu);
+    border: 2px solid rgba(148, 137, 121, 0.3);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+    z-index: 10; /* Di depan lingkaran dekoratif */
+
+    /* Trik Rendering agar border-radius stabil saat animasi */
+    transform: translateZ(0); 
+    -webkit-mask-image: -webkit-radial-gradient(white, black); 
+    backface-visibility: hidden;
+}
+
+/* Foto Profil */
+.profile-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    border-radius: inherit; /* Ikut border-radius induknya */
+}
+
+/* Overlay Kaca (Glassmorphism) */
+.glass-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 30%; /* Hanya menutupi bagian bawah foto */
+    background: linear-gradient(to top, rgba(34, 40, 49, 0.8), transparent);
+    backdrop-filter: blur(5px); /* Efek blur kaca */
+    border-top: 1px solid rgba(223, 208, 184, 0.1);
+    z-index: 11;
+}
+
+/* Badge Profesional */
+.pro-badge {
+    position: absolute;
+    bottom: 20px;
+    right: -20px; /* Sedikit keluar dari kartu */
+    background-color: var(--accent);
+    color: var(--aksen);
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    z-index: 12;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.pro-badge {
+    /* ... kode sebelumnya tetap sama ... */
+    z-index: 100 !important; /* Di lapisan paling depan */
+}
+
+/* --- EFEK HOVER TILT 3D --- */
+.profile-card-container:hover .image-wrapper-pro {
+    transform: rotateY(8deg) rotateX(4deg) translateY(-10px);
+    box-shadow: -15px 30px 60px rgba(0,0,0,0.6);
+    border-color: rgba(148, 137, 121, 0.7);
+}
+
+.profile-card-container:hover .profile-img {
+    transform: scale(1.03);
+}
+
+/* --- KEYFRAMES ANIMASI --- */
+@keyframes floatingPro { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+@keyframes rotateDecor { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+/* Elemen Dekoratif Lingkaran di Belakang Foto */
+.circle-decors {
+    position: absolute;
+    width: 110%; /* Sedikit lebih lebar dari kotak foto */
+    height: 110%;
+    z-index: 1; /* Di lapisan paling belakang */
+    pointer-events: none; /* Agar tidak bisa diklik */
+}
+
+.circle {
+    position: absolute;
+    border-radius: 50%;
+    background: linear-gradient(45deg, var(--aksen), transparent);
+    opacity: 0.2;
+}
+
+.circle-1 {
+    width: 220px;
+    height: 220px;
+    top: -60px;
+    left: -70px;
+    animation: rotateDecor 12s linear infinite;
+}
+
+.circle-2 {
+    width: 180px;
+    height: 180px;
+    bottom: -40px;
+    right: -60px;
+    background: linear-gradient(45deg, var(--warna-teks), transparent);
+    animation: rotateDecor 10s linear infinite reverse;
+}
+
+/* --- EFEK INTERAKSI (HOVER) --- */
+
+/* Efek Tilt 3D saat container disentuh kursor */
+.profile-card-container:hover .image-wrapper-pro {
+    /* Sedikit miring dan naik */
+    transform: rotateY(10deg) rotateX(5deg) translateY(-10px);
+    /* Bayangan menjadi lebih tajam dan menjauh */
+    box-shadow: -15px 30px 60px rgba(0,0,0,0.7);
+    border-color: rgba(148, 137, 121, 0.8); /* Bingkai lebih terang */
+}
+
+/* Foto sedikit zoom saat hover */
+.profile-card-container:hover .profile-img {
+    transform: scale(1.05);
+}
+
+/* --- DEFINISI ANIMASI (KEYFRAMES) --- */
+
+/* Animasi Mengambang (Floating) */
+@keyframes floatingPro {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-15px); /* Naik sedikit */
+    }
+}
+
+/* Animasi Rotasi Lingkaran Dekoratif */
+@keyframes rotateDecor {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* --- Responsif Mobile (Tambahkan di bagian bawah media query Anda) --- */
+@media (max-width: 768px) {
+    .profile-card-container {
+        width: 260px; /* Perkecil ukuran di HP */
+        height: 360px;
+    }
+    
+    .pro-badge {
+        right: 0; /* Badge rata kanan, tidak keluar dari layar */
+        font-size: 0.7rem;
+        padding: 6px 12px;
+        color: var(--bg-utama);
+        background-color: var(--accent);
+    }
+    
+    /* Matikan efek Tilt 3D di mobile agar tidak aneh saat di-scroll */
+    .profile-card-container:hover .image-wrapper-pro {
+        transform: translateY(-5px); /* Hanya naik sedikit */
+        box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+    }
+}
+
+/* --- STYLE BARU FOTO PROFIL PROFESIONAL & ANIMASI --- */
+
+.home-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1000px; /* Diperlukan untuk efek miring 3D */
+}
+
+.profile-card-container {
+    position: relative;
+    width: 320px;
+    height: 420px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: floatingPro 6s ease-in-out infinite;
+    
+    /* --- PERBAIKAN BUG BAGIAN 1 --- */
+    /* Menambahkan transform-style agar elemen anak (foto) berada di ruang 3D yang sama */
+    transform-style: preserve-3d; 
+}
+
+/* Wrapper Foto Utama */
+.image-wrapper-pro {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 30px; /* Sudut melengkung */
+    overflow: hidden; /* Memotong gambar agar ikut melengkung */
+    background: var(--gray);
+    border: 2px solid rgba(148, 137, 121, 0.3);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+    z-index: 10;
+
+    /* --- PERBAIKAN BUG BAGIAN 2 --- */
+    /* 1. Memaksa browser menggunakan rendering hardware secara konsisten */
+    transform: translateZ(0); 
+    -webkit-transform: translateZ(0);
+    
+    /* 2. Trik rendering anti-alias untuk memaksa overflow tetap 'hidden' */
+    -webkit-mask-image: -webkit-radial-gradient(white, black); 
+    
+    /* 3. Memastikan gambar di dalamnya tidak "bocor" keluar saat animasi hover 3D */
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+/* Foto Profil */
+.profile-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    
+    /* --- PERBAIKAN BUG BAGIAN 3 --- */
+    /* Pastikan gambar induknya yang melakukan pemotongan, bukan gambar ini */
+    border-radius: inherit; 
+}
+
+/* ... Kode CSS lainnya (glass-overlay, pro-badge, dll) tetap sama ... */
+
+/* --- About Section --- */
+.about-section { padding: 100px 10%;
+text-align: center; 
+background-color: var(--bg-kartu);
+}
+.about-content { max-width: 800px; margin: 0 auto; font-size: 1.1rem; }
+
+.theme-switch-wrapper {
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+}
+
+.theme-switch {
+    display: inline-block;
+    height: 26px;
+    position: relative;
+    width: 50px;
+}
+
+.theme-switch input { display: none; }
+
+.slider {
+    background-color: var(--bg-kartu);
+    bottom: 0; cursor: pointer; left: 0; position: absolute; right: 0; top: 0;
+    transition: .4s; border-radius: 34px;
+    display: flex; align-items: center; justify-content: space-around;
+    border: 1px solid var(--aksen);
+}
+
+.slider:before {
+    background-color: var(--aksen);
+    bottom: 3px; content: ""; height: 18px; left: 3px;
+    position: absolute; transition: .4s; width: 18px; border-radius: 50%;
+    z-index: 2;
+}
+
+input:checked + .slider:before {
+    transform: translateX(24px);
+}
+
+.slider i { font-size: 10px; color: var(--aksen); }
+
+/* --- Gallery Section --- */
+.gallery-section { padding: 100px 10%; }
+.gallery-tabs { display: flex; justify-content: center; gap: 20px; margin-bottom: 50px; }
+.tab-btn {
+    background: transparent; border: 2px solid var(--gray); color: var(--light);
+    padding: 12px 30px; border-radius: 30px; cursor: pointer; font-weight: 600;
+    transition: 0.3s;
+    font-size: 1rem;
+}
+.tab-btn.active, .tab-btn:hover { background: var(--accent); border-color: var(--accent); color: var(--dark); box-shadow: 0 5px 15px rgba(148, 121, 121, 0.4); }
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* Grid Umum */
+.grid-layout { display: grid; gap: 25px; }
+
+/* Web Grid - 3D Card Effect */
+.web-grid { grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); }
+.grid-item { 
+    position: relative; 
+    overflow: hidden; 
+    border-radius: 15px; 
+    cursor: pointer; 
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    transition: 0.4s ease;
+}
+.grid-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s ease; display: block; }
+.grid-item .overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to bottom, transparent, rgba(34, 40, 49, 0.9));
+    display: flex; align-items: flex-end; justify-content: center;
+    padding-bottom: 20px;
+    opacity: 0; transition: 0.4s ease;
+}
+.overlay {
+    color: var(--aksen);
+}
+.grid-item:hover { transform: translateY(-10px); box-shadow: 0 20px 30px rgba(0,0,0,0.5); }
+.grid-item:hover img { transform: scale(1.1); }
+.grid-item:hover .overlay { opacity: 1; }
+.overlay h3 { color: var(--light); text-transform: uppercase; letter-spacing: 1px; font-size: 1.1rem;}
+
+/* Logo Grid (Feed IG Style) */
+.ig-feed { grid-template-columns: repeat(3, 1fr); gap: 15px; }
+.ig-feed img { 
+    width: 100%; 
+    aspect-ratio: 1/1; 
+    object-fit: cover; 
+    border-radius: 10px; 
+    transition: 0.4s; 
+    cursor: pointer; 
+    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+}
+.ig-feed img:hover { transform: scale(1.05); filter: brightness(1.1); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+
+/* Photography Grid (Zoom Effect) */
+.photo-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.photo-item { overflow: hidden; border-radius: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+.photo-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s ease; cursor: crosshair; display: block; }
+/* Efek zoom saat kursor mendekat */
+.photo-item:hover img { transform: scale(1.3); }
+
+/* --- Social Media / Footer --- */
+/* --- Contact Section Professional Style --- */
+
+.contact-container {
+    display: flex;
+    gap: 80px;
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+    align-items: flex-start;
+}
+
+.contact-info {
+    flex: 1;
+    text-align: left;
+}
+
+.contact-info h3 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: var(--accent);
+}
+
+.contact-info p {
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 40px;
+}
+
+.contact-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.method-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.method-item i {
+    width: 45px;
+    height: 45px;
+    background: var(--bg-kartu);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    color: var(--accent);
+    font-size: 1.2rem;
+    border: 1px solid rgba(148, 137, 121, 0.2);
+}
+
+.method-item span {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.method-item p {
+    margin-bottom: 0;
+    font-weight: 600;
+    color: var(--warna-teks);
+}
+
+/* Social Pills Style */
+.social-pills {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.pill {
+    padding: 8px 18px;
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--warna-teks);
+    border-radius: 50px;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.pill:hover {
+    background: var(--accent);
+    color: var(--aksen);
+    transform: translateY(-3px);
+}
+
+/* Form Styling */
+.contact-form-wrapper {
+    flex: 1.2;
+    background: var(--bg-kartu);
+    padding: 40px;
+    border-radius: 25px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    border: 1px solid rgba(148, 137, 121, 0.1);
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group input, 
+.input-group textarea {
+    width: 100%;
+    padding: 15px;
+    background: var(--bg-utama);
+    border: 1px solid rgba(148, 137, 121, 0.2);
+    border-radius: 12px;
+    color: var(--warna-teks);
+    font-family: inherit;
+    outline: none;
+    transition: 0.3s;
+}
+
+.input-group input:focus, 
+.input-group textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(148, 137, 121, 0.1);
+}
+
+.btn-send {
+    width: 100%;
+    padding: 16px;
+    background: var(--warna-teks);
+    color: var(--bg-kartu);
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    transition: 0.3s;
+}
+
+.btn-send:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(148, 137, 121, 0.3);
+}
+
+
+
+/* Responsif */
+@media (max-width: 850px) {
+    .contact-container {
+        flex-direction: column;
+        gap: 50px;
+    }
+    .contact-form-wrapper {
+        width: 100%;
+    }
+}
+
+/* REVISI: .social-gif Dihilangkan */
+
+.social-buttons { display: flex; justify-content: center; gap: 25px; flex-wrap: wrap; margin-top: 20px;}
+.social-btn { display: flex; align-items: center; gap: 12px; padding: 15px 35px; font-size: 1.1rem; }
+
+/* --- Responsif (Mobile) --- */
+@media (max-width: 768px) {
+    .navbar { padding: 1rem 5%; }
+    .nav-menu {
+        position: absolute; top: 100%; left: 0; width: 100%;
+        background-color: var(--gray); flex-direction: column;
+        text-align: center; padding: 30px 0; gap: 1.5rem;
+        display: none; box-shadow: 0 10px 15px rgba(0,0,0,0.5);
+        opacity: 0; transform: translateY(-20px); transition: 0.4s ease;
+    }
+    .nav-menu.active { display: flex; opacity: 1; transform: translateY(0); }
+    .menu-toggle { display: block; }
+    .nav-contact { display: none; }
+    
+    .home-section { flex-direction: column-reverse; text-align: center; padding-top: 120px; gap: 50px; padding-bottom: 50px; }
+    .home-content { padding-right: 0; }
+    .home-content h1 { font-size: 2.2rem; min-height: 60px; }
+    .home-socials { justify-content: center; }
+    
+    .image-wrapper img { width: 250px; box-shadow: 0 15px 25px rgba(0,0,0,0.4); }
+    /* Matikan efek hover 3D rumit di mobile agar performa bagus */
+    .image-wrapper img:hover { transform: scale(1.02); box-shadow: 0 15px 25px rgba(0,0,0,0.4); }
+
+    .ig-feed { grid-template-columns: repeat(2, 1fr); }
+    .web-grid { grid-template-columns: 1fr; }
+    .gallery-tabs { flex-wrap: wrap; gap: 10px; }
+    .tab-btn { padding: 10px 20px; font-size: 0.9rem; }
+}
+
+/* --- Navigasi Active State --- */
+
+/* Warna teks saat menu aktif */
+.nav-menu a.active {
+    color: var(--aksen);
+}
+
+/* Garis bawah animasi saat menu aktif */
+.nav-menu a.active::after {
+    width: 100%; /* Garis bawah penuh */
+    background: var(--aksen);
+}
+
+/* Memastikan navbar tetap terbaca saat scroll (Efek Blur Premium) */
+.navbar {
+    /* ... kode sebelumnya ... */
+    background-color: rgba(34, 40, 49, 0.8) !important;
+    backdrop-filter: blur(15px) saturate(150%);
+    -webkit-backdrop-filter: blur(15px) saturate(150%);
+    border-bottom: 1px solid rgba(148, 137, 121, 0.1);
+}
+
+/* --- Pembaruan About Section (Premium Layout) --- */
+
+.about-container {
+    display: flex;
+    gap: 50px;
+    align-items: center;
+    max-width: 1100px;
+    margin: 0 auto;
+    text-align: left; /* Teks rata kiri agar lebih profesional */
+}
+
+.about-text-main {
+    flex: 1;
+}
+
+.about-text-main h3 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    line-height: 1.3;
+}
+
+.about-details-grid {
+    flex: 1;
+    display: grid;
+    gap: 25px;
+}
+
+.value-item {
+    background: rgba(57, 62, 70, 0.5); /* Warna #393E46 transparan */
+    padding: 20px;
+    border-radius: 15px;
+    border-left: 4px solid var(--accent);
+    transition: 0.3s ease;
+}
+
+.value-item:hover {
+    background: var(--gray);
+    transform: translateX(10px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.value-item i {
+    font-size: 1.5rem;
+    color: var(--accent);
+    margin-bottom: 10px;
+    display: block;
+}
+
+.value-item h4 {
+    margin-bottom: 5px;
+    color: var(--light);
+}
+
+.value-item p {
+    font-size: 0.9rem;
+    color: #b0a99f;
+}
+
+/* Responsif untuk Tablet & HP */
+@media (max-width: 992px) {
+    .about-container {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .value-item {
+        text-align: left;
+    }
+
+    .about-text-main h3 {
+        font-size: 1.8rem;
+    }
+}
