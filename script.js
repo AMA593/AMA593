@@ -9,7 +9,7 @@ AOS.init({
 // --- REVISI: Fungsi Animasi Mengetik (Typing Effect) ---
 const typingSpan = document.querySelector(".typing-text");
 // Ganti teks di bawah ini dengan nama lengkap Anda atau variasi teks lain
-const textArray = ["Ahmad Murojjib Afthoni.", "Seorang Design Grafis", "Santri Yang Mencoba Berkarya"];
+const textArray = ["Ahmad Murojjib Afthoni.", "Seorang Design Grafis", "aslinya dua orang"];
 const typingSpeed = 100; // Kecepatan mengetik (ms)
 const erasingSpeed = 50;  // Kecepatan menghapus (ms)
 const newTextDelay = 2000; // Jeda sebelum mengetik teks baru (ms)
